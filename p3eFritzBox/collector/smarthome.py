@@ -77,7 +77,6 @@ class SmarthomeCollector(CollectorBase):
 
             smart_devices = device['conn'].get_devices()
 
-            # thermostats
             for _device in smart_devices:
                 dev = dict(
                     fb_name=device['name'],
@@ -89,9 +88,18 @@ class SmarthomeCollector(CollectorBase):
                     has_temperature_sendor=str(_device.has_temperature_sensor),
                     has_switch=str(_device.has_switch)
                 )
-                fb_dev_info = InfoMetricFamily('p3e_fb_temperator_sensor', 'FritzBox device information')
+                fb_dev_info = InfoMetricFamily('p3e_fb_device', 'FritzBox device information')
                 fb_dev_info.add_metric(labels=dev.keys(), value=dev)
                 yield fb_dev_info
+
+                if hasattr(_device, 'battery_level') and hasattr(_device, 'battery_low'):
+                    fb_battery_gauge = GaugeMetricFamily(
+                        'p3e_fb_battery_status',
+                        'Battery level and status',
+                        labels=['ain', 'device', 'fb_name', 'battery_low']
+                    )
+                    fb_battery_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], str(_device.battery_low)], _device.battery_level)
+                    yield fb_battery_gauge
 
                 if 'temperature_sensor' in device['device_types'] or device['device_types'] == [] and _device.has_temperature_sensor:
                     fb_temp_gauge = GaugeMetricFamily(
@@ -103,12 +111,3 @@ class SmarthomeCollector(CollectorBase):
                     fb_temp_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], 'comfort'], _device.comfort_temperature)
                     fb_temp_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], 'eco'], _device.eco_temperature)
                     yield fb_temp_gauge
-
-                if hasattr(_device, 'battery_level') and hasattr(_device, 'battery_low'):
-                    fb_battery_gauge = GaugeMetricFamily(
-                        'p3e_fb_battery_status',
-                        'Battery level and status',
-                        labels=['ain', 'device', 'fb_name', 'battery_low']
-                    )
-                    fb_battery_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], str(_device.battery_low)], _device.battery_level)
-                    yield fb_battery_gauge
