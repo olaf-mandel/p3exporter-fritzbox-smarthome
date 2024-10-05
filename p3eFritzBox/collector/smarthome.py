@@ -101,7 +101,7 @@ class SmarthomeCollector(CollectorBase):
                     fb_battery_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], str(_device.battery_low)], _device.battery_level)
                     yield fb_battery_gauge
 
-                if 'temperature_sensor' in device['device_types'] or device['device_types'] == [] and _device.has_temperature_sensor:
+                if ('temperature_sensor' in device['device_types'] or device['device_types'] == []) and _device.has_temperature_sensor:
                     fb_temp_gauge = GaugeMetricFamily(
                         'p3e_fb_temperatur_sensor',
                         'Current and target temperature data',
