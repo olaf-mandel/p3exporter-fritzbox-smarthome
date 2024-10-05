@@ -72,6 +72,9 @@ class SmarthomeCollector(CollectorBase):
     def collect(self):
         """Collect the metrics."""
         for device in self.devices:
+            # Poll data from Fritzbox
+            device['conn'].update_devices(ignore_removed=False)
+
             smart_devices = device['conn'].get_devices()
 
             # thermostats
