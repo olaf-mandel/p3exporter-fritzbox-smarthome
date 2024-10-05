@@ -90,7 +90,7 @@ name  | | device_\<NUM\> | An arbitrary name to identify metrics according the d
 username |  | * | Username used to authenticate against FritzBox
 password |  | * | Password used to authenticate against FritzBox
 hostname | https://fritz.box | | Hostname of FritzBox to connect to. Protocol can be `http` or `https`. If no protocol is given default will be `https`.
-device_types | | | List of device type to enable. If List is empty all device types are activated. Possible values are:<br/><ul><li>temperature_sensor</li></ul>
+device_types | | | List of device type to enable. If List is empty all device types are activated. Possible values are:<br/><ul><li>thermostat</li></ul>
 ssl_verify | True | | Set to `True` to disable ssl certificate verfication. This is useful in case of using self signed certificates.<br/>**Note**: To use this parameter `pyfritzhome` from github is needed as the ssl_verify parameter is not yet available in pypi package. For details use `requirements.txt`.
 <!-- markdownlint-enable MD033 MD034 -->
 

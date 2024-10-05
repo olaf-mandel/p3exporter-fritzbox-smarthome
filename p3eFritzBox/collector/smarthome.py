@@ -101,13 +101,13 @@ class SmarthomeCollector(CollectorBase):
                     fb_battery_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], str(_device.battery_low)], _device.battery_level)
                     yield fb_battery_gauge
 
-                if ('temperature_sensor' in device['device_types'] or device['device_types'] == []) and _device.has_temperature_sensor:
-                    fb_temp_gauge = GaugeMetricFamily(
-                        'p3e_fb_temperatur_sensor',
-                        'Current and target temperature data',
+                if ('thermostat' in device['device_types'] or device['device_types'] == []) and _device.has_thermostat:
+                    fb_thermostat = GaugeMetricFamily(
+                        'p3e_fb_thermostat',
+                        'All temperature data',
                         labels=['ain', 'device', 'fb_name', 'temperature']
                     )
-                    fb_temp_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], 'actual'], _device.actual_temperature)
-                    fb_temp_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], 'comfort'], _device.comfort_temperature)
-                    fb_temp_gauge.add_metric([_device.ain, _device.name, dev['fb_name'], 'eco'], _device.eco_temperature)
-                    yield fb_temp_gauge
+                    fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'actual'], _device.actual_temperature)
+                    fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'comfort'], _device.comfort_temperature)
+                    fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'eco'], _device.eco_temperature)
+                    yield fb_thermostat
