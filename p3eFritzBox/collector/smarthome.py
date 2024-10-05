@@ -107,7 +107,27 @@ class SmarthomeCollector(CollectorBase):
                         'All temperature data',
                         labels=['ain', 'device', 'fb_name', 'temperature']
                     )
-                    fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'actual'], _device.actual_temperature)
+                    if _device.actual_temperature is not None:
+                        fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'actual'], _device.actual_temperature)
                     fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'comfort'], _device.comfort_temperature)
                     fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'eco'], _device.eco_temperature)
+                    if _device.target_temperature is not None:
+                        fb_thermostat.add_metric([_device.ain, _device.name, dev['fb_name'], 'target'], _device.target_temperature)
                     yield fb_thermostat
+                    fb_thermostat_state = GaugeMetricFamily(
+                        'p3e_fb_thermostat_state',
+                        'State data',
+                        labels=['ain', 'device', 'fb_name', 'state']
+                    )
+                    if _device.adaptive_heating_active is not None:
+                        fb_thermostat_state.add_metric([_device.ain, _device.name, dev['fb_name'], 'adaptive_heating_active'], 1 if _device.adaptive_heating_active else 0)
+                    if _device.boost_active is not None:
+                        fb_thermostat_state.add_metric([_device.ain, _device.name, dev['fb_name'], 'boost_active'], 1 if _device.boost_active else 0)
+                    if _device.holiday_active is not None:
+                        fb_thermostat_state.add_metric([_device.ain, _device.name, dev['fb_name'], 'holiday_active'], 1 if _device.holiday_active else 0)
+                    if _device.summer_active is not None:
+                        fb_thermostat_state.add_metric([_device.ain, _device.name, dev['fb_name'], 'summer_active'], 1 if _device.summer_active else 0)
+                    if _device.window_open is not None:
+                        fb_thermostat_state.add_metric([_device.ain, _device.name, dev['fb_name'], 'window_open'], 1 if _device.window_open else 0)
+                    if fb_thermostat_state.samples:
+                        yield fb_thermostat_state
