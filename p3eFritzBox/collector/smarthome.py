@@ -84,9 +84,9 @@ class SmarthomeCollector(CollectorBase):
                     device=_device.name,
                     manufacturer=_device.manufacturer,
                     type=_device.productname,
+                    has_switch=str(_device.has_switch),
+                    has_temperature_sensor=str(_device.has_temperature_sensor),
                     has_thermostat=str(_device.has_thermostat),
-                    has_temperature_sendor=str(_device.has_temperature_sensor),
-                    has_switch=str(_device.has_switch)
                 )
                 fb_dev_info = InfoMetricFamily('p3e_fb_device', 'FritzBox device information')
                 fb_dev_info.add_metric(labels=dev.keys(), value=dev)
